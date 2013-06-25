@@ -1,0 +1,123 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Spike Train Calculator</title>
+<link rel="stylesheet" href="style.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="jquery.flot.js"></script>
+<script type="text/javascript" src="calcguts.js"></script>
+<body>
+
+<div class="demo-container">
+	<div id="placeholder" class="demo-placeholder"></div>
+</div>
+
+<br />
+
+<div id="calculator">
+<table><form id="calcinputs">
+
+<tr>
+	<td>Pulse Duration:</td>
+	<td><input class="target" type="text" name="pd" id="pd" /></td>
+	<td>
+		<select class="target" name="pdu" id="pdu">
+			<option value="1000000" selected>&micro;s</option>
+			<option value="1000">ms</option>
+			<option value="1">s</option>
+		</select>
+	</td>
+	<td><div id="amsys">SN:</div></td>
+	<td><div id="pd_sn">0e-0</div></td>
+	<td>sec</td>
+</tr>
+<tr>
+	<td></td>
+	<td><input class="target" type="radio" name="phase" value="1" id="monophasic" /> Monophasic</td>
+	
+</tr>
+<tr>
+	<td></td>
+	<td><input class="target" type="radio" name="phase" value="2" id="biphasic" checked /> Biphasic</td>
+</tr>
+
+<tr><td><br /></td></tr>
+
+<tr>
+	<td>Entry Data Type:</td>
+	<td>
+		<select class="choice" name="dt" id="dt">
+			<option value="ipptbw" selected>Inter-Pulse Period & TBW</option>
+			<option value="freqnp">Frequency & Number of Pulses</option>
+		</select>
+	</td>
+</tr>
+
+
+
+<tr>
+	<td>Inter-Pulse Period:</td>
+	<td><input class="target" type="text" name="ipp" id="ipp" /></td>
+	<td>
+		<select class="target" name="ippu" id="ippu" >
+			<option value="1000000">&micro;s</option>
+			<option value="1000" selected>ms</option>
+			<option value="1">s</option>
+		</select>
+	</td>
+	<td><div id="amsys">SN:</div></td>
+	<td><div id="ipp_sn">0e-0</div></td>
+	<td>sec</td>
+</tr>
+<tr>
+	<td>Train Burst Width:</td>
+	<td><input class="target" type="text" name="tbw" id="tbw" /></td>
+	<td>
+		<select class="target" name="tbwu" id="tbwu" >
+			<option value="1000000">&micro;s</option>
+			<option value="1000" selected>ms</option>
+			<option value="1">s</option>
+		</select>
+	</td>
+	<td><div id="amsys">SN: </div></td>
+	<td><div id="tbw_sn">0e-0</div></td>
+	<td>sec</td>
+</tr>
+<tr>
+	<td>Frequency:</td>
+	<td><input class="target" type="text" name="freq" id="freq" /></td>
+	<td>Hz</td>
+</tr>
+<tr>
+	<td>Number of Pulses:</td>
+	<td><input class="target" type="text" name="np" id="np" /></td>
+	<td>#</td>
+</tr>
+
+<tr><td><br /><br /></td></tr>
+
+<tr>
+	<td>Pre-Train Delay:</td>
+	<td><input class="target" type="text" name="ptd" id="ptd" /></td>
+	<td>
+		<select class="target" name="ptdu" id="ptdu" >
+			<option value="1000000">&micro;s</option>
+			<option value="1000" selected>ms</option>
+			<option value="1">s</option>
+		</select>
+	</td>
+	<td><div id="amsys">SN:</div></td>
+	<td><div id="ptd_sn">0e-0</div></td>
+	<td>sec</td>
+</tr>
+<tr>
+	<td>Amplitude:</td>
+	<td><input class="target" type="text" name="amp" id="amp" /></td>
+	<td>uA</td>
+</tr>
+
+</form></table>
+
+</div>
+</body>
+</html>
