@@ -16,13 +16,8 @@ $(document).ready(function() {
 	var ibi_val = "";
 	var ibiu_val = "";
 	
-	var a1 = [[0,0],[1,0]];
-	var a2 = [[1,0],[1,1],null,[1.5,1],[1.5,-1],null,[2,-1],[2,0],null,[4,0],[4,1],null,[4.5,1],[4.5,-1],null,[5,-1],[5,0],null,[7,0],[7,1],null,[7.5,1],[7.5,-1],null,[8,-1],[8,0]];
-	var a3 = [[1,1],[1.5,1],null,[1.5,-1],[2,-1],null,[4,1],[4.5,1],null,[4.5,-1],[5,-1],null,[7,1],[7.5,1],null,[7.5,-1],[8,-1]];
-	var a4 = [[2,0],[4,0],null,[5,0],[7,0]];
-	var a5 = [[8,0],[12,0]];
-	var a6 = [];
-	$.plot("#placeholder", [a5, a1, a3, a4, a2]);
+	var a1 = [[0,0],[1,0],[1,1],[1.5,1],[1.5,-1],[2,-1],[2,0],[4,0],[4,1],[4.5,1],[4.5,-1],[5,-1],[5,0],[7,0],[7,1],[7.5,1],[7.5,-1],[8,-1],[8,0],[12,0]];
+	$.plot("#placeholder", [a1]);
 	
 	//var o = plot.pointOffset({x: 0.2, y: 0.5});
 	//placeholder.append("<div style='position:absolute;left:" + (o.left + 4) + "px;top:" + o.top + "px;color:#666;font-size:smaller'>Warming up</div>");
@@ -60,6 +55,7 @@ $(document).ready(function() {
 		nb_val = parseFloat(document.getElementById("nb").value);
 		ibi_val = parseFloat(document.getElementById("ibi").value);
 		ibiu_val = parseFloat(document.getElementById("ibiu").value);
+		neglead_val = document.getElementById("neglead").checked;
 		
 		ptd_scinotation = ptd_val/ptdu_val;
 		pulse_duration = pd_val/pdu_val;
@@ -68,6 +64,8 @@ $(document).ready(function() {
 		
 		$("#ptd_sn").text(ptd_scinotation.toExponential(2));
 		$("#pd_sn").text(pulse_duration.toExponential(2));
+		$("#ibi_sn").text(inter_burst_interval.toExponential(2));
+		
 		if (type_val === "ipptbw") {
 			ipp_val = parseFloat(document.getElementById("ipp").value);
 			tbw_val = parseFloat(document.getElementById("tbw").value);
@@ -91,13 +89,14 @@ $(document).ready(function() {
 			ipp_precalc = ((1-(total_pulse*freq_val))/freq_val);
 			tbw_precalc = ((total_pulse+ipp_precalc)*np_val);
 			
-			inter_pulse = ipp_precalc*ippu_val;
+			inter_pulse = ipp_precalc;
+			inter_pulse_format = ipp_precalc*ippu_val;
 			train_burst_width = tbw_precalc*tbwu_val;
 			
 			$("#ipp_sn").text(ipp_precalc.toExponential(2));
 			$("#tbw_sn").text(tbw_precalc.toExponential(2));
 			
-			fr_ipp = inter_pulse.toFixed(4);
+			fr_ipp = inter_pulse_format.toFixed(4);
 			fr_tbw = train_burst_width.toFixed(4);
 		
 			document.getElementById("ipp").value = fr_ipp.toString(10);
@@ -110,6 +109,11 @@ $(document).ready(function() {
 		} else if (phase_val === 2) {
 			second_half = pulse_duration;
 			namp_val = -(amp_val);	
+		};
+		
+		if (neglead_val === true) {
+			amp_val = -(amp_val);
+			namp_val = -(namp_val);
 		};
 		
 		var base = ptd_scinotation;

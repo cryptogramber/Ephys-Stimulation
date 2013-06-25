@@ -24,7 +24,7 @@ body, div, a {
 	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
-#ipp_sn, #tbw_sn, #pd_sn, #ptd_sn {
+#ipp_sn, #tbw_sn, #pd_sn, #ptd_sn, #ibi_sn {
 	width: 110px;
 	text-align: left;
 }
