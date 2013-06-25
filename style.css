@@ -7,7 +7,7 @@ body, div, a {
 #calculator {
 	box-sizing: border-box;
 	width: 960px;
-	height: 450px;
+	height: 525px;
 	margin: 20px auto;
 	padding: 10px;
 	/* border: 2px black solid; */
@@ -34,11 +34,11 @@ body, div, a {
 	text-align: right;
 }
 
-.target#pd,.target#ipp,.target#tbw,.target#freq,.target#np,.choice#dt,.target#ptd,.target#amp {
+.target#pd,.target#ipp,.target#tbw,.target#freq,.target#np,.choice#dt,.target#ptd,.target#amp,.target#nb,.target#ibi {
 	width: 300px;
 }
 
-.target#pdu,.target#ippu,.target#tbwu,.target#ptdu {
+.target#pdu,.target#ippu,.target#tbwu,.target#ptdu,.target#ibiu {
 	width: 60px;
 }
 

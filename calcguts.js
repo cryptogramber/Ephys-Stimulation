@@ -12,6 +12,9 @@ $(document).ready(function() {
 	var amp_val = "";
 	var freq_val = "";
 	var np_val = "";
+	var nb_val = "";
+	var ibi_val = "";
+	var ibiu_val = "";
 	
 	var a1 = [[0,0],[1,0]];
 	var a2 = [[1,0],[1,1],null,[1.5,1],[1.5,-1],null,[2,-1],[2,0],null,[4,0],[4,1],null,[4.5,1],[4.5,-1],null,[5,-1],[5,0],null,[7,0],[7,1],null,[7.5,1],[7.5,-1],null,[8,-1],[8,0]];
@@ -21,16 +24,15 @@ $(document).ready(function() {
 	var a6 = [];
 	$.plot("#placeholder", [a5, a1, a3, a4, a2]);
 	
-	var o = plot.pointOffset({x: 0.2, y: 0.5});
-	placeholder.append("<div style='position:absolute;left:" + (o.left + 4) + "px;top:" + o.top + "px;color:#666;font-size:smaller'>Warming up</div>");
-	o = plot.pointOffset({x: 1, y: 1.2});
-	placeholder.append("<div style='position:absolute;left:" + (o.left + 4) + "px;top:" + o.top + "px;color:#666;font-size:smaller'>Actual measurements</div>");
+	//var o = plot.pointOffset({x: 0.2, y: 0.5});
+	//placeholder.append("<div style='position:absolute;left:" + (o.left + 4) + "px;top:" + o.top + "px;color:#666;font-size:smaller'>Warming up</div>");
+	//o = plot.pointOffset({x: 1, y: 1.2});
+	//placeholder.append("<div style='position:absolute;left:" + (o.left + 4) + "px;top:" + o.top + "px;color:#666;font-size:smaller'>Actual measurements</div>");
 	
 	type_val = document.getElementById("dt").value;
 	$('#freq').attr('disabled','disabled');
 	$('#np').attr('disabled','disabled');
 	
-
 	$('.choice').change(function() {
 		type_val = document.getElementById("dt").value;
 		if (type_val === "ipptbw") {
@@ -55,9 +57,15 @@ $(document).ready(function() {
 		ptd_val = parseFloat(document.getElementById("ptd").value);
 		ptdu_val = parseFloat(document.getElementById("ptdu").value);
 		amp_val = parseFloat(document.getElementById("amp").value);
+		nb_val = parseFloat(document.getElementById("nb").value);
+		ibi_val = parseFloat(document.getElementById("ibi").value);
+		ibiu_val = parseFloat(document.getElementById("ibiu").value);
+		
 		ptd_scinotation = ptd_val/ptdu_val;
 		pulse_duration = pd_val/pdu_val;
 		total_pulse = phase_val*pulse_duration;
+		inter_burst_interval = ibi_val/ibiu_val;
+		
 		$("#ptd_sn").text(ptd_scinotation.toExponential(2));
 		$("#pd_sn").text(pulse_duration.toExponential(2));
 		if (type_val === "ipptbw") {
@@ -79,6 +87,7 @@ $(document).ready(function() {
 			freq_val = parseFloat(document.getElementById("freq").value);
 			np_val = parseFloat(document.getElementById("np").value);
 		
+			number_pulses = np_val;
 			ipp_precalc = ((1-(total_pulse*freq_val))/freq_val);
 			tbw_precalc = ((total_pulse+ipp_precalc)*np_val);
 			
@@ -95,25 +104,36 @@ $(document).ready(function() {
 			document.getElementById("tbw").value = fr_tbw.toString(10);
 		};
 
-		step1 = ptd_scinotation + pulse_duration;
-		step2 = ptd_scinotation + total_pulse;
-		step3 = ptd_scinotation + total_pulse + inter_pulse;
-		step4 = ptd_scinotation + total_pulse + inter_pulse + pulse_duration;
-		step5 = ptd_scinotation + total_pulse + inter_pulse + total_pulse;
-		step6 = ptd_scinotation + total_pulse + inter_pulse + total_pulse + inter_pulse;
-		step7 = ptd_scinotation + total_pulse + inter_pulse + total_pulse + inter_pulse + pulse_duration;
-		step8 = ptd_scinotation + total_pulse + inter_pulse + total_pulse + inter_pulse + total_pulse;
-		step9 = ptd_scinotation + total_pulse + inter_pulse + total_pulse + inter_pulse + total_pulse + inter_pulse;
-		namp_val = -(amp_val);
+		if (phase_val === 1) {
+			second_half = 0;
+			namp_val = amp_val;
+		} else if (phase_val === 2) {
+			second_half = pulse_duration;
+			namp_val = -(amp_val);	
+		};
 		
-		$(function() {
-			if (phase_val === 2) {
-				var d2 = [[0, 0], [ptd_scinotation, 0], [ptd_scinotation, amp_val], [step1, amp_val], [step1, namp_val], [step2, namp_val], [step2, 0], [step3, 0], [step3, amp_val], [step4, amp_val], [step4, namp_val], [step5, namp_val], [step5, 0], [step6, 0], [step6, amp_val], [step7, amp_val], [step7, namp_val], [step8, namp_val], [step8, 0], [step9, 0]];
-				$.plot("#placeholder", [ d2 ]);
-			} else if (phase_val === 1) {
-				var d2 = [[0, 0], [ptd_scinotation, 0], [ptd_scinotation, amp_val], [step1, amp_val], [step1, 0], [(step1+inter_pulse), 0], [(step1+inter_pulse), amp_val], [(step1+inter_pulse+pulse_duration), amp_val], [(step1+inter_pulse+pulse_duration), 0]];
-				$.plot("#placeholder", [ d2 ]);
+		var base = ptd_scinotation;
+		var burst = [];
+		burst.push([0,0]);
+		
+		for (var outer=0; outer<nb_val; outer++) {
+			for (var i=0; i<number_pulses; i++) {
+				burst.push([base,0]);
+				burst.push([base,amp_val]);
+				base = base+pulse_duration;
+				burst.push([base,amp_val]);
+				burst.push([base,namp_val]);
+				base = base+second_half;
+				burst.push([base,namp_val]);
+				burst.push([base,0]);
+				base = base+inter_pulse;
 			}; 
+			base = base-inter_pulse+inter_burst_interval;
+		};
+		endline = base+inter_pulse*2;
+		burst.push([endline,0]);
+		$(function() {
+			$.plot("#placeholder", [ burst ]);
 		});
 	});
 });

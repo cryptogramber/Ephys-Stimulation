@@ -12,8 +12,6 @@
 	<div id="placeholder" class="demo-placeholder"></div>
 </div>
 
-<br />
-
 <div id="calculator">
 <table><form id="calcinputs">
 
@@ -39,6 +37,10 @@
 <tr>
 	<td></td>
 	<td><input class="target" type="radio" name="phase" value="2" id="biphasic" checked /> Biphasic</td>
+</tr>
+<tr>
+	<td></td>
+	<td><input class="target" type="checkbox" name="neglead" id="neglead" /> Negative Leading</td>
 </tr>
 
 <tr><td><br /></td></tr>
@@ -115,9 +117,28 @@
 	<td><input class="target" type="text" name="amp" id="amp" /></td>
 	<td>uA</td>
 </tr>
+<tr>
+	<td>Number of Bursts:</td>
+	<td><input class="target" type="text" name="nb" id="nb" /></td>
+	<td>#</td>
+</tr>
+<tr>
+	<td>Inter-Burst Interval:</td>
+	<td><input class="target" type="text" name="ibi" id="ibi" /></td>
+	<td>
+		<select class="target" name="ibiu" id="ibiu" >
+			<option value="1000000">&micro;s</option>
+			<option value="1000" selected>ms</option>
+			<option value="1">s</option>
+		</select>
+	</td>
+	<td><div id="amsys">SN: </div></td>
+	<td><div id="tbw_sn">0e-0</div></td>
+	<td>sec</td>
+</tr>
+
 
 </form></table>
-
 </div>
 </body>
 </html>
